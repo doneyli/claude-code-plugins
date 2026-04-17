@@ -19,12 +19,12 @@ Karpathy's compiled-knowledge wiki pattern, packaged as a Claude Code plugin. No
 
 ```bash
 # Via the Signal Labs marketplace (recommended)
-/plugin marketplace add doneyli/signal-labs-plugins
+/plugin marketplace add doneyli/claude-code-plugins
 /plugin install llm-wiki
 
 # Or clone and load directly
-git clone https://github.com/doneyli/signal-labs-plugins.git ~/.claude/plugins/signal-labs
-claude --plugin-dir ~/.claude/plugins/signal-labs/llm-wiki
+git clone https://github.com/doneyli/claude-code-plugins.git ~/.claude/plugins/claude-code-plugins
+claude --plugin-dir ~/.claude/plugins/claude-code-plugins/llm-wiki
 
 # Or for a single session
 cd <your-wiki-root>

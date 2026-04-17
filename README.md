@@ -6,7 +6,7 @@ Plugins for knowledge workers who use Claude Code as their daily driver. Built b
 
 ```bash
 # Add the marketplace (one-time)
-/plugin marketplace add doneyli/signal-labs-plugins
+/plugin marketplace add doneyli/claude-code-plugins
 
 # Install a plugin
 /plugin install llm-wiki
@@ -15,8 +15,8 @@ Plugins for knowledge workers who use Claude Code as their daily driver. Built b
 Or load a plugin directly for a single session:
 
 ```bash
-git clone https://github.com/doneyli/signal-labs-plugins.git ~/.claude/plugins/signal-labs
-claude --plugin-dir ~/.claude/plugins/signal-labs/llm-wiki
+git clone https://github.com/doneyli/claude-code-plugins.git ~/.claude/plugins/claude-code-plugins
+claude --plugin-dir ~/.claude/plugins/claude-code-plugins/llm-wiki
 ```
 
 ## Available Plugins
@@ -49,7 +49,7 @@ Full docs: [llm-wiki/README.md](llm-wiki/README.md)
 ## Repository Structure
 
 ```
-signal-labs-plugins/
+claude-code-plugins/
 ├── .claude-plugin/
 │   └── marketplace.json          # Plugin registry — lists all available plugins
 ├── llm-wiki/                     # Plugin: LLM Wiki
