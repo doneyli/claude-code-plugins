@@ -76,7 +76,7 @@ Each plugin is a self-contained directory. Adding a new plugin means creating a 
 
 More plugins for the Signal Labs toolkit. Each one follows the same pattern: a focused tool for a specific knowledge-work problem, distributed as a Claude Code plugin with zero install friction.
 
-Subscribe to [Signal over Noise](https://doneyli.substack.com) for announcements.
+Subscribe to [Signal over Noise](https://doneyli.substack.com/subscribe) for announcements.
 
 ## License
 
