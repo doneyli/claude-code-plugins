@@ -1,0 +1,12 @@
+{
+  "name": "llm-wiki",
+  "version": "0.1.0",
+  "description": "Karpathy-style compiled-knowledge wikis as a Claude Code plugin. A `raw/` folder of sources you curate, a `wiki/` folder Claude compiles. Ingest, query, and lint via slash commands.",
+  "author": {
+    "name": "Don Eyli",
+    "email": "doneyli@gmail.com"
+  },
+  "homepage": "https://github.com/doneyli/llm-wiki",
+  "license": "MIT",
+  "keywords": ["wiki", "knowledge-base", "karpathy", "compiled-knowledge", "research"]
+}
