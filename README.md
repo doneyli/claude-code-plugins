@@ -1,6 +1,6 @@
 # Signal Labs Plugins for Claude Code
 
-Plugins for knowledge workers who use Claude Code as their daily driver. Built by [Don Eyli](https://signalovernoise.substack.com) — Principal AI Architect, Montreal AI community lead, author of *Signal over Noise*.
+Plugins for knowledge workers who use Claude Code as their daily driver. Built by [Doneyli](https://doneyli.substack.com) — Principal AI Architect, Montreal AI community lead, author of *Signal over Noise*.
 
 ## Install
 
