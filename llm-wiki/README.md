@@ -1,6 +1,6 @@
 # llm-wiki — Claude Code plugin
 
-Karpathy's compiled-knowledge wiki pattern, packaged as a Claude Code plugin. No install beyond Claude Code itself. Drop into any folder, curate sources in `raw/`, let Claude compile `wiki/`.
+An implementation of Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern, packaged as a Claude Code plugin. The architecture — immutable `raw/` sources curated by a human, compiled `wiki/` pages maintained by an LLM, with ingest/query/lint as the three core operations — is based on Karpathy's original gist. This plugin makes it runnable in two commands with no install beyond Claude Code itself.
 
 ## What it gives you
 

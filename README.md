@@ -23,7 +23,7 @@ claude --plugin-dir ~/.claude/plugins/claude-code-plugins/llm-wiki
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| [llm-wiki](llm-wiki/) | Karpathy-style compiled-knowledge wikis. Drop sources (PDF, images, CSV, JSON, markdown) into `raw/`, Claude compiles `wiki/`. Includes slash commands, enforcement hooks, and a restricted ingest subagent. | 0.1.0 |
+| [llm-wiki](llm-wiki/) | Implementation of [Karpathy's LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern. Drop sources (PDF, images, CSV, JSON, markdown) into `raw/`, Claude compiles `wiki/`. Slash commands, enforcement hooks, restricted ingest subagent. | 0.1.0 |
 
 ### llm-wiki
 
