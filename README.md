@@ -1,6 +1,6 @@
 # Signal Labs Plugins for Claude Code
 
-Plugins for knowledge workers who use Claude Code as their daily driver. Built by [Don Eyli](https://signalovernoise.substack.com) (Principal AI Architect, Montreal AI community lead).
+Plugins for knowledge workers who use Claude Code as their daily driver. Built by [Don Eyli](https://signalovernoise.substack.com) — Principal AI Architect, Montreal AI community lead, author of *Signal over Noise*.
 
 ## Install
 
@@ -12,46 +12,71 @@ Plugins for knowledge workers who use Claude Code as their daily driver. Built b
 /plugin install llm-wiki
 ```
 
-Or load directly for a single session:
+Or load a plugin directly for a single session:
 
 ```bash
-claude --plugin-dir /path/to/signal-labs-plugins/llm-wiki
+git clone https://github.com/doneyli/signal-labs-plugins.git ~/.claude/plugins/signal-labs
+claude --plugin-dir ~/.claude/plugins/signal-labs/llm-wiki
 ```
 
 ## Available Plugins
 
+| Plugin | Description | Version |
+|--------|-------------|---------|
+| [llm-wiki](llm-wiki/) | Karpathy-style compiled-knowledge wikis. Drop sources (PDF, images, CSV, JSON, markdown) into `raw/`, Claude compiles `wiki/`. Includes slash commands, enforcement hooks, and a restricted ingest subagent. | 0.1.0 |
+
 ### llm-wiki
 
-Karpathy's compiled-knowledge wiki pattern, packaged for Claude Code. Drop sources into `raw/`, Claude compiles `wiki/`.
-
-**What it gives you:**
-- Slash commands: `/llm-wiki:init`, `/llm-wiki:ingest`, `/llm-wiki:query`, `/llm-wiki:lint`
-- A restricted ingest subagent (no shell, no web — reads raw/, writes wiki/)
-- Enforcement hooks: `raw/` is immutable (blocked at the tool layer), frontmatter validated on every write
-- Native format support: PDF, images, CSV, JSON, HTML, ICS, EML — no external tools needed
-
-**Quickstart:**
-
-```bash
-mkdir ~/wikis/my-research && cd ~/wikis/my-research
-claude --plugin-dir ~/.local/share/claude/plugins/llm-wiki
-```
-
-Then inside Claude Code:
+**Quickstart** (inside a Claude Code session with the plugin loaded):
 
 ```
 /llm-wiki:init My Research Wiki
-# drop files into raw/
+# drop files into raw/ — supports .md, .pdf, .png, .jpg, .csv, .json, .html, .ics, .eml
 /llm-wiki:ingest --new
 /llm-wiki:query "What are the main themes?" --file-back
 /llm-wiki:lint
 ```
 
-See [llm-wiki/README.md](llm-wiki/README.md) for full docs.
+**What it ships:**
+- 4 slash commands: `/llm-wiki:init`, `/llm-wiki:ingest`, `/llm-wiki:query`, `/llm-wiki:lint`
+- 1 skill: `wiki-compiler` — auto-invoked when you mention ingest/compile/wiki tasks
+- 1 subagent: `wiki-ingester` — restricted (no Bash, no web) for unattended runs
+- 2 hooks: `raw/` immutability enforced at the tool layer + frontmatter validation on every wiki write
+- Native format support: PDF, images, CSV, JSON, HTML, ICS, EML — no external tools
+
+Full docs: [llm-wiki/README.md](llm-wiki/README.md)
+
+## Repository Structure
+
+```
+signal-labs-plugins/
+├── .claude-plugin/
+│   └── marketplace.json          # Plugin registry — lists all available plugins
+├── llm-wiki/                     # Plugin: LLM Wiki
+│   ├── .claude-plugin/
+│   │   └── plugin.json           # Plugin manifest
+│   ├── skills/                   # Auto-invoked skills
+│   ├── commands/                 # Slash commands (/llm-wiki:*)
+│   ├── agents/                   # Restricted subagents
+│   ├── hooks/                    # Tool-layer enforcement
+│   ├── templates/                # Files dropped during /init
+│   └── README.md                 # Plugin-specific docs
+├── <future-plugin>/              # Next plugin goes here
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   └── ...
+├── CONTRIBUTING.md               # How to add a plugin
+├── LICENSE                       # MIT
+└── README.md                     # This file
+```
+
+Each plugin is a self-contained directory. Adding a new plugin means creating a directory and registering it in `marketplace.json`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Coming Soon
 
-More plugins for the Signal Labs toolkit. Subscribe to [Signal over Noise](https://signalovernoise.substack.com) for announcements.
+More plugins for the Signal Labs toolkit. Each one follows the same pattern: a focused tool for a specific knowledge-work problem, distributed as a Claude Code plugin with zero install friction.
+
+Subscribe to [Signal over Noise](https://signalovernoise.substack.com) for announcements.
 
 ## License
 
