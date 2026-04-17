@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}} — Wiki</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{--bg:#fafafa;--card:#fff;--text:#1a1a1a;--text2:#555;--link:#0645ad;--border:#d4d4d4;--sidebar-w:240px;--max-w:780px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;--serif:Georgia,"Times New Roman",serif}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1a1a;--card:#222;--text:#e0e0e0;--text2:#999;--link:#6db3f2;--border:#333}}
+body{margin:0;font-family:var(--font);font-size:17px;line-height:1.65;color:var(--text);background:var(--bg)}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+
+/* Layout */
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);padding:1.25rem 1rem;position:sticky;top:0;height:100vh;overflow-y:auto;font-size:13.5px;flex-shrink:0}
+.sidebar .wiki-title{font-weight:700;font-size:15px;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.sidebar .wiki-title a{color:var(--text)}
+.sidebar h2{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin:1.4em 0 .35em;font-weight:600}
+.sidebar ul{list-style:none;margin:0 0 .5em;padding:0}
+.sidebar li{margin:.15em 0}
+.sidebar a{color:var(--link);font-size:13px}
+.sidebar a.active{font-weight:700;color:var(--text)}
+.main{flex:1;max-width:var(--max-w);padding:2rem 2.5rem 4rem;margin:0 auto}
+
+/* Typography */
+h1{font-family:var(--serif);font-size:2rem;font-weight:400;border-bottom:1px solid var(--border);padding-bottom:.3em;margin:0 0 .3em}
+h2{font-family:var(--serif);font-size:1.35rem;font-weight:400;margin:1.8em 0 .5em;padding-bottom:.2em;border-bottom:1px solid #eee}
+h3{font-size:1.05rem;font-weight:600;margin:1.4em 0 .4em}
+p{margin:0 0 .85em}
+ul,ol{margin:0 0 .85em;padding-left:1.6em}
+li{margin-bottom:.2em}
+
+/* Metadata */
+.meta{font-size:13px;color:var(--text2);margin-bottom:1.5em;display:flex;gap:.4em;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:500}
+.tag-entity{background:#dbeafe;color:#1e40af}
+.tag-concept{background:#dcfce7;color:#166534}
+.tag-theme{background:#f3e8ff;color:#6b21a8}
+.tag-synthesis{background:#fef3c7;color:#92400e}
+.tag-comparison{background:#ffedd5;color:#c2410c}
+.tag-default{background:#f3f4f6;color:#374151}
+.confidence{font-size:11px;padding:2px 8px;border-radius:3px}
+.confidence-high{background:#dcfce7;color:#166534}
+.confidence-medium{background:#fef3c7;color:#92400e}
+.confidence-low{background:#fee2e2;color:#991b1b}
+
+/* Tables */
+table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.95em}
+th,td{border:1px solid var(--border);padding:.5em .75em;text-align:left}
+th{background:var(--bg);font-weight:600}
+tr:nth-child(even) td{background:var(--bg)}
+
+/* Callouts */
+.callout{border-left:4px solid;padding:.75em 1em;margin:1em 0;border-radius:0 4px 4px 0;font-size:.95em}
+.callout-title{font-weight:700;margin-bottom:.3em}
+.callout-contradiction{border-color:#f59e0b;background:#fffbeb}
+.callout-gap{border-color:#3b82f6;background:#eff6ff}
+.callout-confidential{border-color:#374151;background:#f9fafb}
+.callout-low-confidence{border-color:#9ca3af;background:#f9fafb}
+.callout-source-removed{border-color:#ef4444;background:#fef2f2}
+
+/* Code */
+code{background:#f4f4f4;padding:.15em .4em;border-radius:3px;font-size:.88em}
+pre{background:#f4f4f4;padding:1em;border-radius:4px;overflow-x:auto;margin:1em 0}
+pre code{background:none;padding:0}
+
+/* Source refs */
+.source-ref{font-size:.75em;color:var(--text2);cursor:help}
+
+/* Wikilinks */
+.wikilink{color:var(--link)}
+.wikilink-missing{color:#ba2121;border-bottom:1px dashed #ba2121}
+
+/* Backlinks */
+.backlinks{margin-top:3em;padding-top:1em;border-top:1px solid var(--border);font-size:14px;color:var(--text2)}
+.backlinks h2{font-size:1rem;border:none;margin-top:0}
+
+/* Footer */
+.footer{text-align:center;font-size:12px;color:var(--text2);padding:3em 0 2em;border-top:1px solid var(--border);margin-top:3em}
+
+/* Responsive */
+@media(max-width:768px){.sidebar{display:none}.main{padding:1rem 1.25rem}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="wiki-title"><a href="{{ROOT}}index.html">{{WIKI_TITLE}}</a></div>
+  {{NAV}}
+</nav>
+<div class="main">
+  <h1>{{TITLE}}</h1>
+  <div class="meta">{{META}}</div>
+  {{CONTENT}}
+  <div class="footer">Compiled with <a href="https://github.com/doneyli/claude-code-plugins">llm-wiki</a></div>
+</div>
+</div>
+</body>
+</html>
