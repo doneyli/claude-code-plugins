@@ -11,7 +11,7 @@
       "name": "llm-wiki",
       "source": "./llm-wiki",
       "description": "Karpathy-style compiled-knowledge wikis. Drop sources into raw/, Claude compiles wiki/. Supports PDF, images, CSV, JSON natively.",
-      "version": "0.2.0"
+      "version": "0.3.0"
     }
   ]
 }

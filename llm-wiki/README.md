@@ -6,11 +6,13 @@ An implementation of Andrej Karpathy's [LLM Wiki](https://gist.github.com/karpat
 
 - `wiki-compiler` **skill** — the "compiler" knowledge. Auto-invokes when you say things like "ingest these into my wiki" or work inside a directory that has the pattern set up.
 - `wiki-ingester` **subagent** — restricted agent (no Bash, no WebFetch) for unattended ingest runs.
-- Four **slash commands**:
+- Six **slash commands**:
   - `/llm-wiki:init [domain-title]` — scaffold a new wiki in the cwd
-  - `/llm-wiki:ingest <file> | --new | --all` — compile raw sources into wiki pages
+  - `/llm-wiki:sources add <path> | list | remove <name>` — register external project folders as source directories (no copying into raw/ needed)
+  - `/llm-wiki:ingest <file> | --new | --all` — compile sources into wiki pages (reads from both sources.yaml + raw/)
   - `/llm-wiki:query "..." [--file-back]` — answer grounded in the wiki, optionally file the answer back
   - `/llm-wiki:lint` — health check: orphans, broken links, stale pages, missing frontmatter
+  - `/llm-wiki:export` — render the wiki as a static HTML site (opens with a double-click, no server)
 - Two **hooks** (enforcement, not just prompts):
   - PreToolUse: blocks writes to `raw/` (immutability invariant)
   - PostToolUse: validates YAML frontmatter on `wiki/*.md` writes

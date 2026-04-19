@@ -60,13 +60,22 @@ Wait — the hook blocks ALL writes to `raw/`. For the conversion step to work, 
 
 For unsupported formats, print a warning and skip: `"Skipping raw/<file> — format not supported natively. Use the CLI's llm-wiki import to convert."`
 
-## Step 1 — Resolve arguments
+## Step 1 — Resolve arguments and build file list
 
 Parse `$ARGUMENTS`:
 
-- **If a specific file path** (exists under `raw/`): ingest that single file. Can be `.md` or any natively-readable format.
-- **If `--new` or empty**: list ALL files in `raw/` (any extension) that are NOT referenced in `wiki/log.md` (grep for `Ingested raw/<basename>`). Process each in order.
-- **If `--all`**: process every file in `raw/` regardless of log state.
+- **If a specific file path**: ingest that single file. Can be under `raw/` OR under any registered source directory. Can be `.md` or any natively-readable format.
+- **If `--new` or empty**: collect files from TWO places, then filter to new-only:
+  1. **sources.yaml** (if it exists): read each source entry, glob files matching `pattern` under `path`. These are external project files — read in-place, never copy.
+  2. **raw/** (if it exists): list all files (any extension).
+  3. Filter: keep only files NOT already referenced in `wiki/log.md` (grep for `Ingested <filepath>` — match on the full path or basename).
+- **If `--all`**: same collection from both sources.yaml + raw/, but skip the log.md filter — process everything.
+
+**Source priority:** process sources.yaml entries first (in order listed), then raw/. This way the user's curated source directories are ingested before ad-hoc drops.
+
+**Citing sources from external directories:** when a file comes from a registered source (not raw/), cite it in the wiki page's `sources:` frontmatter using the full path relative to the wiki root, or the absolute path if outside the wiki tree. For example:
+- File at `~/content-system/.claude/research/pain-points.md` → `sources: [~/content-system/.claude/research/pain-points.md]`
+- File at `raw/notes.md` → `sources: [raw/notes.md]`
 
 ## Step 2 — For each file to ingest
 

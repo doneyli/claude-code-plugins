@@ -1,6 +1,6 @@
 {
   "name": "llm-wiki",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Karpathy-style compiled-knowledge wikis as a Claude Code plugin. A `raw/` folder of sources you curate, a `wiki/` folder Claude compiles. Ingest, query, and lint via slash commands.",
   "author": {
     "name": "Doneyli",

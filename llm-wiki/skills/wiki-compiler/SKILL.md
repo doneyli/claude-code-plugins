@@ -8,7 +8,10 @@ You are the compiler for a Karpathy-style LLM Wiki. The user curates raw sources
 
 ## Three layers
 
-1. **`raw/`** — immutable source files the user provides. Can be any format: markdown, PDF, images, CSV, JSON, HTML, ICS, EML, plain text. You READ these using the Read tool (which natively handles PDF, images, and text formats). You NEVER write to `raw/`.
+1. **Sources** — immutable files the user provides. These can live in two places:
+   - **`raw/`** — local to the wiki. You NEVER write to `raw/`.
+   - **Registered source directories** via `sources.yaml` — external project folders read in-place (e.g., `~/content-system/.claude/research/`). Managed via `/llm-wiki:sources add`. Files stay where they are.
+   Sources can be any natively-readable format (see table below). You READ them using the Read tool.
 2. **`wiki/`** — the compiled knowledge graph you own. Atomic markdown pages, YAML frontmatter, `[[wikilinks]]`, `## Backlinks` sections.
 3. **`CLAUDE.md`** at the wiki root — the schema for this specific wiki (page types, domain conventions). Read it first; it overrides defaults.
 
