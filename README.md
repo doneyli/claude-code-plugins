@@ -27,21 +27,30 @@ claude --plugin-dir ~/.claude/plugins/claude-code-plugins/llm-wiki
 
 ### llm-wiki
 
-**Quickstart** (inside a Claude Code session with the plugin loaded):
+**Two ways to use it:**
 
 ```
+# Fresh wiki with raw/ folder:
 /llm-wiki:init My Research Wiki
-# drop files into raw/ — supports .md, .pdf, .png, .jpg, .csv, .json, .html, .ics, .eml
-/llm-wiki:ingest --new
+/llm-wiki:ingest --all
+
+# Or point at existing project folders (no copying):
+/llm-wiki:sources add ~/content-system/.claude/research
+/llm-wiki:sources add ~/content-system/ideas/signals
+/llm-wiki:ingest --all
+
+# Then query, lint, export:
 /llm-wiki:query "What are the main themes?" --file-back
 /llm-wiki:lint
+/llm-wiki:export    # → static HTML site in site/
 ```
 
 **What it ships:**
-- 4 slash commands: `/llm-wiki:init`, `/llm-wiki:ingest`, `/llm-wiki:query`, `/llm-wiki:lint`
+- 6 slash commands: `init`, `sources`, `ingest`, `query`, `lint`, `export`
 - 1 skill: `wiki-compiler` — auto-invoked when you mention ingest/compile/wiki tasks
 - 1 subagent: `wiki-ingester` — restricted (no Bash, no web) for unattended runs
 - 2 hooks: `raw/` immutability enforced at the tool layer + frontmatter validation on every wiki write
+- Source directories: register external project folders via `sources.yaml` — files read in-place, never copied
 - Native format support: PDF, images, CSV, JSON, HTML, ICS, EML — no external tools
 
 Full docs: [llm-wiki/README.md](llm-wiki/README.md)
