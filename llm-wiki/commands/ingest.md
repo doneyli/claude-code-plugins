@@ -1,64 +1,32 @@
 ---
-description: Compile raw sources into the wiki. Pass a specific file (any supported format) or --new to process anything not yet in log.md or --all to re-ingest everything. Auto-converts PDF, images, CSV, JSON, HTML, ICS, EML using Claude's native reading capabilities — no external tools needed.
+description: Compile raw sources into the wiki. Pass a specific file (any supported format) or --new to process anything not yet in log.md or --all to re-ingest everything. Reads supported PDF, image, and text formats directly using Claude's native reading capabilities; source files stay unchanged.
 argument-hint: "<path-to-file> | --new | --all"
 ---
 
 Compile raw sources into the wiki following the workflow in `${CLAUDE_PLUGIN_ROOT}/skills/wiki-compiler/SKILL.md`.
 
-## Step 0 — Auto-convert non-markdown files
+## Step 0 — Read supported sources directly
 
-Before ingesting, check if any target files are non-markdown. Claude Code can natively read these formats — use the Read tool to read them, extract the content, and write a `.md` conversion into `raw/`.
+For each target resolved in Step 1, read the source in place using the Read tool.
+Hold its content in memory for Step 2; no intermediate markdown file is needed.
 
-**Natively convertible formats** (no external tools needed):
+| Source format | How to read it |
+|---------------|----------------|
+| `.md`, `.txt` | Read the text directly. |
+| `.pdf` | Read natively, in requests of up to 20 pages. |
+| `.png`, `.jpg`, `.jpeg` | Read with multimodal vision; distinguish visible text from interpretation. |
+| `.csv`, `.tsv`, `.json`, `.html`, `.htm`, `.ics`, `.eml` | Read as text and extract the source-supported content relevant to the wiki. |
 
-| Extension | How to convert |
-|-----------|---------------|
-| `.pdf` | Read the PDF (up to 20 pages). Write a markdown version preserving headings, lists, tables, and key content. |
-| `.png`, `.jpg`, `.jpeg` | Read the image (multimodal). Write a markdown file with a description/caption and any visible text (OCR). |
-| `.csv`, `.tsv` | Read the file. Write a markdown file with the data as a markdown table (first 100 rows) and column summary stats. |
-| `.json` | Read the file. Write a markdown file: arrays-of-objects as tables, nested objects as nested headings. |
-| `.html`, `.htm` | Read the file. Extract the article body, strip nav/footer/ads, write clean markdown. |
-| `.ics` | Read the file. Write a chronological event listing (date, title, location, description). |
-| `.eml` | Read the file. Write markdown with Subject/From/To/Date in frontmatter and body as content. |
-| `.txt` | Read the file. Wrap in frontmatter, keep body verbatim. |
+Keep `raw/` and registered external source files immutable: never write, edit,
+rename, move, or replace them. Do not stage conversions elsewhere or bypass the
+source-protection hook. Wiki pages cite the original source filename, including
+its extension, in `sources:`; use the external-path citation rules in Step 1.
+For example, cite `raw/report.pdf`, not a generated markdown substitute.
 
-**Not natively convertible** (warn the user):
-- `.docx` → suggest: `pandoc -f docx -t gfm file.docx > raw/file.md`
-- `.pptx` → suggest: install `python-pptx` or use the CLI's `llm-wiki import`
-- `.m4a`, `.mp3`, `.wav` → suggest: install `whisper.cpp` or use the CLI
-- `.mbox` → suggest: use the CLI's `llm-wiki import`
-
-**Conversion procedure for each non-md file:**
-
-1. Read the file using the Read tool (Claude natively handles PDF, images, CSV, etc.)
-2. Write a converted markdown file to `raw/<slug>.md` where slug = kebab-cased original filename. Include this frontmatter:
-   ```yaml
-   ---
-   source_type: pdf | image | csv | json | html | ics | eml | txt
-   source_path: <original file path>
-   imported_at: YYYY-MM-DD
-   original_title: <extracted title or filename>
-   conversion_tool: claude-native
-   conversion_confidence: high | medium | low
-   ---
-   ```
-   - `high` for text-based (CSV, JSON, HTML, EML, ICS, TXT)
-   - `medium` for PDF (layout may lose structure)
-   - `low` for images (OCR/description is approximate)
-3. Move the original file to `raw/_originals/<original-name>` (create `_originals/` if needed)
-4. Proceed to ingest the new `.md` file
-
-**Important:** the PreToolUse hook blocks writes to `raw/`. For this conversion step ONLY, write the `.md` files using the Write tool — the hook allows writes to `raw/*.md` and `raw/_originals/`. It blocks edits to existing raw files, not creation of new converted markdown.
-
-Wait — the hook blocks ALL writes to `raw/`. For the conversion step to work, you need to write the converted `.md` into `raw/`. Two options:
-- Write the converted content to a temp location, then tell the user to move it into `raw/`. Clunky.
-- **Better:** write the converted `.md` directly into `wiki/_converted/` as an intermediate staging area, then ingest from there.
-
-**Actually simplest:** just ingest the non-md file directly — read it via the Read tool, and proceed with the normal ingest workflow (steps 1-7 below) using the file's content as if it were markdown. No intermediate `.md` file needed. The source file stays in `raw/` untouched, and wiki pages cite it as `raw/<original-filename>` in their `sources:` frontmatter.
-
-**Use this approach:** When you encounter a non-md file, read it natively, hold its content in memory, and proceed with the ingest workflow below. The wiki page's `sources:` field cites the original file (e.g., `raw/report.pdf`). No conversion step writes to disk.
-
-For unsupported formats, print a warning and skip: `"Skipping raw/<file> — format not supported natively. Use the CLI's llm-wiki import to convert."`
+If a format is not natively readable (for example `.docx`, `.pptx`, audio, or
+`.mbox`), warn and skip it: `"Skipping <source-path> — format not supported
+natively."` If reading is incomplete, state the coverage limit; do not invent
+missing content or claim the whole source was processed.
 
 ## Step 1 — Resolve arguments and build file list
 
